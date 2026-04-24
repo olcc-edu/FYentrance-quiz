@@ -6,6 +6,8 @@ export const JOHOR_SJKC: Record<string, string[]> = {
     "宽柔二小",
     "宽柔三小",
     "宽柔四小",
+    "宽柔五小",
+    "班兰华小",
     "国光一校",
     "国光二校",
     "国光三校",
