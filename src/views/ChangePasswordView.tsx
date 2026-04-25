@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { KeyRound, Loader2, CheckCircle2 } from 'lucide-react';
+import { KeyRound, Loader2, CheckCircle2, LogOut, MessageCircle } from 'lucide-react';
 import type { StudentProfile } from '../types';
 import { changePassword } from '../services/accountService';
+
+const ADMIN_WHATSAPP = '60165789873';
 
 interface Props {
   profile: StudentProfile;
   forced: boolean; // true = 首次登入强制改
   onDone: (profile: StudentProfile) => void;
   onCancel?: () => void;
+  onLogout?: () => void;
 }
 
 export default function ChangePasswordView({
@@ -16,7 +19,12 @@ export default function ChangePasswordView({
   forced,
   onDone,
   onCancel,
+  onLogout,
 }: Props) {
+  const waText = encodeURIComponent(
+    `你好，我在「宽中入学试刷题宝」需要重置密码。\n姓名：${profile.name || ''}\n电话：${profile.phone}\n请协助处理，谢谢！`,
+  );
+  const waUrl = `https://wa.me/${ADMIN_WHATSAPP}?text=${waText}`;
   const [oldPw, setOldPw] = useState(forced ? '1234' : '');
   const [newPw, setNewPw] = useState('');
   const [confirmPw, setConfirmPw] = useState('');
@@ -132,6 +140,30 @@ export default function ChangePasswordView({
             取消
           </button>
         )}
+
+        <div className="pt-2 grid grid-cols-2 gap-3">
+          {onLogout && (
+            <button
+              type="button"
+              onClick={onLogout}
+              className="py-3 rounded-xl border border-slate-200 bg-white text-slate-700 font-semibold hover:bg-slate-50 transition flex items-center justify-center gap-2"
+            >
+              <LogOut className="w-4 h-4" />
+              返回登入
+            </button>
+          )}
+          <a
+            href={waUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`py-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-semibold transition flex items-center justify-center gap-2 ${
+              onLogout ? '' : 'col-span-2'
+            }`}
+          >
+            <MessageCircle className="w-4 h-4" />
+            WhatsApp 联系 admin
+          </a>
+        </div>
       </form>
 
       <p className="text-xs text-slate-400 text-center leading-relaxed px-4">

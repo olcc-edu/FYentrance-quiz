@@ -341,6 +341,11 @@ export default function App() {
             onCancel={
               profile.mustChangePassword ? undefined : () => setView('profile')
             }
+            onLogout={() => {
+              localStorage.removeItem('student_profile');
+              setProfile(null);
+              setView('login');
+            }}
           />
         </main>
       </div>
