@@ -517,7 +517,7 @@ export default function App() {
                 </button>
               )}
 
-              <BrandBanner variant="login" />
+              <BrandBanner variant="home" />
             </motion.div>
           )}
 
