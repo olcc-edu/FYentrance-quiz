@@ -80,7 +80,8 @@ export default function ChangePasswordView({
           <span className="text-sm font-semibold text-slate-700">旧密码</span>
           <input
             type="password"
-            autoComplete="current-password"
+            autoComplete="new-password"
+            name="old-password-no-autofill"
             value={oldPw}
             onChange={(e) => setOldPw(e.target.value)}
             placeholder="首次登入请填 1234"
