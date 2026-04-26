@@ -18,6 +18,8 @@ import {
   KeyRound,
   LogOut,
   CalendarClock,
+  Volume2,
+  VolumeX,
 } from 'lucide-react';
 import type {
   Question,
@@ -33,6 +35,15 @@ import RegisterView from './views/RegisterView';
 import ChangePasswordView from './views/ChangePasswordView';
 import PaywallView from './views/PaywallView';
 import BrandBanner from './views/BrandBanner';
+import {
+  correctSound,
+  wrongSound,
+  finishSound,
+  correctConfetti,
+  finishConfetti,
+  isMuted,
+  setMuted,
+} from './lib/feedback';
 import {
   canStartTopic,
   getTodayUsage,
@@ -63,6 +74,13 @@ export default function App() {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const [muted, setMutedState] = useState<boolean>(() => isMuted());
+  const toggleMute = () => {
+    const next = !muted;
+    setMuted(next);
+    setMutedState(next);
+  };
 
   const [view, setView] = useState<ViewState>('login');
   const [mode, setMode] = useState<AppMode | null>(null);
@@ -239,6 +257,10 @@ export default function App() {
     const currentQuestion = quizQuestions[currentIndex];
     if (option === currentQuestion.answer) {
       setScore((prev) => prev + 1);
+      correctSound();
+      correctConfetti();
+    } else {
+      wrongSound();
     }
     const newAnswers = [...answers];
     newAnswers[currentIndex] = option;
@@ -252,6 +274,8 @@ export default function App() {
       setShowExplanation(false);
     } else {
       setView('result');
+      finishSound();
+      finishConfetti();
     }
   };
 
@@ -413,6 +437,18 @@ export default function App() {
                 免费版 · 升级
               </button>
             )}
+            <button
+              onClick={toggleMute}
+              className="p-1.5 hover:bg-slate-100 rounded-full transition"
+              aria-label={muted ? '开启音效' : '关闭音效'}
+              title={muted ? '音效已关闭' : '音效已开启'}
+            >
+              {muted ? (
+                <VolumeX className="w-5 h-5 text-slate-400" />
+              ) : (
+                <Volume2 className="w-5 h-5 text-slate-500" />
+              )}
+            </button>
             <button
               onClick={() => setView('profile')}
               className="p-1.5 hover:bg-slate-100 rounded-full transition"
