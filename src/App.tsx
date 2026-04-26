@@ -516,6 +516,8 @@ export default function App() {
                   <ChevronRight className="w-5 h-5 text-amber-600 shrink-0" />
                 </button>
               )}
+
+              <BrandBanner variant="login" />
             </motion.div>
           )}
 
