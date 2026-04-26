@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { UserPlus, AlertCircle, Loader2 } from 'lucide-react';
-import { JOHOR_SJKC } from '../data/johorSjkc';
 import type { StudentProfile } from '../types';
 import { registerNewUser } from '../services/accountService';
 
@@ -14,7 +13,6 @@ interface Props {
 export default function RegisterView({ onDone, onGoLogin, source }: Props) {
   const [name, setName] = useState('');
   const [school, setSchool] = useState('');
-  const [schoolOther, setSchoolOther] = useState('');
   const [phone, setPhone] = useState('');
   const [err, setErr] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -24,10 +22,7 @@ export default function RegisterView({ onDone, onGoLogin, source }: Props) {
     setErr(null);
 
     if (name.trim().length < 2) return setErr('请填写真实姓名（至少 2 字）');
-    if (!school) return setErr('请选择目前就读小学');
-    if (school === '其他' && !schoolOther.trim()) {
-      return setErr('请输入你的小学名称');
-    }
+    if (school.trim().length < 2) return setErr('请填写目前就读小学');
     if (!/^60\d{8,10}$/.test(phone)) {
       return setErr('联络号码格式错误，请以 60 开头，例：60123456789');
     }
@@ -37,7 +32,7 @@ export default function RegisterView({ onDone, onGoLogin, source }: Props) {
       const profile = await registerNewUser({
         phone,
         name: name.trim(),
-        school: school === '其他' ? schoolOther.trim() : school,
+        school: school.trim(),
         source,
       });
       localStorage.setItem('student_profile', JSON.stringify(profile));
@@ -96,34 +91,17 @@ export default function RegisterView({ onDone, onGoLogin, source }: Props) {
 
         <label className="block">
           <span className="text-sm font-semibold text-slate-700">目前就读小学</span>
-          <select
-            value={school}
-            onChange={(e) => setSchool(e.target.value)}
-            className="mt-1.5 w-full px-4 py-3 rounded-xl border border-slate-200 bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none appearance-none"
-          >
-            <option value="">-- 请选择 --</option>
-            {Object.entries(JOHOR_SJKC).map(([daerah, schools]) => (
-              <optgroup key={daerah} label={daerah}>
-                {schools.map((s) => (
-                  <option key={s} value={s}>
-                    {s}
-                  </option>
-                ))}
-              </optgroup>
-            ))}
-            <option value="其他">其他（自行填写）</option>
-          </select>
-        </label>
-
-        {school === '其他' && (
           <input
             type="text"
-            value={schoolOther}
-            onChange={(e) => setSchoolOther(e.target.value)}
-            placeholder="请输入你的小学名称"
-            className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none"
+            value={school}
+            onChange={(e) => setSchool(e.target.value)}
+            placeholder="例：宽柔一小 / 辅士华小 / 国光二校"
+            className="mt-1.5 w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none"
           />
-        )}
+          <span className="text-xs text-slate-400 mt-1 block">
+            请填写完整的中文校名
+          </span>
+        </label>
 
         <label className="block">
           <span className="text-sm font-semibold text-slate-700">
