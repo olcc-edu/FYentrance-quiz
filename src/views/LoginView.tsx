@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { GraduationCap, LogIn, Loader2 } from 'lucide-react';
 import type { StudentProfile } from '../types';
 import { login } from '../services/accountService';
+import BrandBanner from './BrandBanner';
 
 interface Props {
   onSuccess: (profile: StudentProfile) => void;
@@ -129,6 +130,8 @@ export default function LoginView({ onSuccess, onGoRegister }: Props) {
         </a>
         ，管理员协助重置为默认密码 1234。
       </div>
+
+      <BrandBanner variant="login" />
     </motion.div>
   );
 }

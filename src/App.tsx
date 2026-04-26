@@ -32,6 +32,7 @@ import LoginView from './views/LoginView';
 import RegisterView from './views/RegisterView';
 import ChangePasswordView from './views/ChangePasswordView';
 import PaywallView from './views/PaywallView';
+import BrandBanner from './views/BrandBanner';
 import {
   canStartTopic,
   getTodayUsage,
@@ -880,6 +881,10 @@ export default function App() {
                 >
                   重新练习
                 </button>
+              </div>
+
+              <div className="pt-4 -mx-2">
+                <BrandBanner variant="result" />
               </div>
             </motion.div>
           )}
