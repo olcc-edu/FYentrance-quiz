@@ -25,7 +25,7 @@ export default function ChangePasswordView({
     `你好，我在「宽中入学试刷题宝」需要重置密码。\n姓名：${profile.name || ''}\n电话：${profile.phone}\n请协助处理，谢谢！`,
   );
   const waUrl = `https://wa.me/${ADMIN_WHATSAPP}?text=${waText}`;
-  const [oldPw, setOldPw] = useState(forced ? '1234' : '');
+  const [oldPw, setOldPw] = useState('');
   const [newPw, setNewPw] = useState('');
   const [confirmPw, setConfirmPw] = useState('');
   const [err, setErr] = useState<string | null>(null);
